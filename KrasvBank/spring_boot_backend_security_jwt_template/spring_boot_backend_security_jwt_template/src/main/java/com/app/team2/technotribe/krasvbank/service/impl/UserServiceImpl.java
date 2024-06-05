@@ -3,7 +3,7 @@ package com.app.team2.technotribe.krasvbank.service.impl;
 import java.math.BigDecimal;
 
 import javax.transaction.Transactional;
-
+import com.app.team2.technotribe.krasvbank.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,17 +11,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.app.team2.technotribe.krasvbank.config.JwtTokenProvider;
 import com.app.team2.technotribe.krasvbank.dto.AccountInfo;
 import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
 //import com.app.team2.technotribe.krasvbank.dto.EmailDetails;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
-import com.app.team2.technotribe.krasvbank.dto.LoginDto;
+import com.app.team2.technotribe.krasvbank.dto.SigninRequest;
 import com.app.team2.technotribe.krasvbank.dto.TransactionDto;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
-import com.app.team2.technotribe.krasvbank.dto.UserRequest;
+import com.app.team2.technotribe.krasvbank.dto.SignupRequest;
 import com.app.team2.technotribe.krasvbank.entity.User;
+import com.app.team2.technotribe.krasvbank.jwt_utils.JwtUtils;
 import com.app.team2.technotribe.krasvbank.repository.UserRepository;
 import com.app.team2.technotribe.krasvbank.util.AccountUtils;
 
@@ -40,17 +40,16 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-	@Autowired
-	AuthenticationManager authenticationManager;
+	
 	
 	@Autowired
-	JwtTokenProvider jwtTokenProvider;
+	JwtUtils jwtUtils;
 	
 	@Autowired
 	TransactionService transactionService;
 	
 	@Override
-	public BankResponse createAccount(UserRequest userRequest) {
+	public BankResponse createAccount(SignupRequest userRequest) {
 
 	if (userRepository.existsByEmail(userRequest.getEmail())) {
 			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_EXISTS_CODE)
@@ -68,6 +67,7 @@ public class UserServiceImpl implements UserService {
 				.phoneNumber(userRequest.getPhoneNumber())
 				.alternativePhoneNumber(userRequest.getAlternativePhoneNumber())
 				.status("INACTIVE")
+				.role(userRequest.getRole())
 				.build();
 
 		User savedUser = userRepository.save(newUser);
@@ -89,22 +89,22 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	public BankResponse login(LoginDto loginDto) {
-		Authentication authentication=null;
-		authentication=authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
-				);
-//		EmailDetails loginAlert=EmailDetails.builder()
-//				.subject("You're logged in! ")
-//				.recipient(loginDto.getEmail())
-//				.messageBody("you logged into your account. if you did non initiate this request, please contact your bank")
+//	public BankResponse login(SigninRequest loginDto) {
+//		Authentication authentication=null;
+//		authentication=authenticationManager.authenticate(
+//				new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
+//				);
+////		EmailDetails loginAlert=EmailDetails.builder()
+////				.subject("You're logged in! ")
+////				.recipient(loginDto.getEmail())
+////				.messageBody("you logged into your account. if you did non initiate this request, please contact your bank")
+////				.build();
+////		emailService.sendEmailAlert(loginAlert);
+//		return BankResponse.builder()
+//				.responseCode("Login Success")
+//				.responseMessage(jwtUtils.generateJwtToken(authentication))
 //				.build();
-//		emailService.sendEmailAlert(loginAlert);
-		return BankResponse.builder()
-				.responseCode("Login Success")
-				.responseMessage(jwtTokenProvider.generateToken(authentication))
-				.build();
-	}
+//	}
 	
 	@Override
 	public BankResponse balanceEnquiry(EnquiryRequest request) {

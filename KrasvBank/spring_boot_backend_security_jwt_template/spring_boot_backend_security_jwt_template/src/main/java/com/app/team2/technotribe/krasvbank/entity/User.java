@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,10 +35,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "User")
-public class User implements UserDetails{
+public class User {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String gender;
@@ -44,49 +46,20 @@ public class User implements UserDetails{
 	private String stateOfOrigin;
 	private String accountNumber;
 	private BigDecimal accountBalance;
+	@Column(length = 30, unique = true)
 	private String email;
+	@Column(length = 300, nullable = false)
 	private String password;
 	private String phoneNumber;
 	private String alternativePhoneNumber;
 	private String status;
-	private Role role;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(length = 30)
+	private UserRole role;
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime modifiedAt;
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return List.of(new SimpleGrantedAuthority(role.name()));
-	}
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return email;
-	}
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return password;
-	}
+
 }

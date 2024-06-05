@@ -3,6 +3,7 @@ package com.app.team2.technotribe.krasvbank.service.impl;
 import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
+import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
 import com.app.team2.technotribe.krasvbank.dto.UserRequest;
 
 public interface UserService {
@@ -16,5 +17,7 @@ public interface UserService {
 	BankResponse creditAccount(CreditDebitRequest request);
 
 	BankResponse debitAccount(CreditDebitRequest request);
+
+	BankResponse transfer(TransferRequest request);
 }
  

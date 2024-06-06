@@ -45,7 +45,7 @@ public class SecurityConfig {
 				.permitAll() // for incoming req ending with /products/view :
 								// no authentication n
 								// authorization needed
-				.antMatchers("/api/user/*").hasRole("USER")// only customer can purchase the products
+				.antMatchers("/api/user/*","/api/user/credit").hasRole("USER")// only customer can purchase the products
 				.antMatchers("/api/admin").hasRole("ADMIN") // only admin can add the products
 				.anyRequest().authenticated() // all remaining end points accessible only to authenticated users
 				.and().sessionManagement() // configure HttpSession management

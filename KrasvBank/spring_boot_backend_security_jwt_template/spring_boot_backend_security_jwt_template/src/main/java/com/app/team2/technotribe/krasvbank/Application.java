@@ -5,6 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.SpringVersion;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -19,7 +20,9 @@ import org.modelmapper.Conditions;
 public class Application {
 
 	public static void main(String[] args) {
+		System.out.println("version:" + SpringVersion.getVersion());
 		SpringApplication.run(Application.class, args);
+		
 	}
 
 	@Bean // equivalent to <bean id ..../> in xml file

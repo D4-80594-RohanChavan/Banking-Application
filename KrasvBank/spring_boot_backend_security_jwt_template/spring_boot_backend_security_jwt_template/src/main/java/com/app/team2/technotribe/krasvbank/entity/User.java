@@ -2,8 +2,6 @@ package com.app.team2.technotribe.krasvbank.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +14,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
 
 	@Id
@@ -53,7 +48,7 @@ public class User {
 	private String phoneNumber;
 	private String alternativePhoneNumber;
 	private String status;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(length = 30)
 	private UserRole role;

@@ -1,5 +1,8 @@
 package com.app.team2.technotribe.krasvbank.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +27,8 @@ import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
 import com.app.team2.technotribe.krasvbank.dto.SignupRequest;
 import com.app.team2.technotribe.krasvbank.service.impl.UserService;
 import com.app.team2.technotribe.krasvbank.jwt_utils.JwtUtils;
+import com.app.team2.technotribe.krasvbank.repository.TokenBlacklistRepository;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +42,8 @@ public class UserController {
 	private JwtUtils utils;
 	@Autowired
 	UserService userService;
-
+	@Autowired
+    private TokenBlacklistRepository tokenBlacklistRepository;
 	@Autowired
 	private AuthenticationManager mgr;
 
@@ -46,6 +54,15 @@ public class UserController {
 	public BankResponse createAccount(@RequestBody SignupRequest userRequest) {
 		return userService.createAccount(userRequest);
 	}
+	 @PostMapping("/logout")
+	    public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader) {
+	        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+	            String token = authHeader.substring(7);
+	            tokenBlacklistRepository.add(token);
+	        }
+	        SecurityContextHolder.clearContext();
+	        return ResponseEntity.ok("Logged out successfully");
+	    }
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> signIn(@RequestBody @Valid SigninRequest request) {

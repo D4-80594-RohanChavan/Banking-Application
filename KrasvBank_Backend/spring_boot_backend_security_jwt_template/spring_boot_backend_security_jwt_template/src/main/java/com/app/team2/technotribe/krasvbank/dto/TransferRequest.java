@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TransferRequest {
 
+	private String password;
 	private String sourceAccountNumber;
 	private String destinationAccountNumber;
 	private BigDecimal amount;

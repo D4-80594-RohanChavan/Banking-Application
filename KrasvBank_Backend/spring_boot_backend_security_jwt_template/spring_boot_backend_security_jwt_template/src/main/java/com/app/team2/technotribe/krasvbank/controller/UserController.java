@@ -24,14 +24,17 @@ import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
 import com.app.team2.technotribe.krasvbank.dto.SigninRequest;
 import com.app.team2.technotribe.krasvbank.dto.SigninResponse;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
+import com.app.team2.technotribe.krasvbank.entity.User;
 import com.app.team2.technotribe.krasvbank.dto.SignupRequest;
 import com.app.team2.technotribe.krasvbank.service.impl.UserService;
 import com.app.team2.technotribe.krasvbank.jwt_utils.JwtUtils;
 import com.app.team2.technotribe.krasvbank.repository.TokenBlacklistRepository;
+import com.app.team2.technotribe.krasvbank.repository.UserRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -42,6 +45,8 @@ public class UserController {
 	private JwtUtils utils;
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserRepository userRepository;
 	@Autowired
     private TokenBlacklistRepository tokenBlacklistRepository;
 	@Autowired
@@ -64,14 +69,16 @@ public class UserController {
 	        return ResponseEntity.ok("Logged out successfully");
 	    }
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> signIn(@RequestBody @Valid SigninRequest request) {
-		System.out.println("in sign in " + request);
-		Authentication principal = mgr
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		String jwtToken = utils.generateJwtToken(principal);
-		return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!"));
-	}
+	 @PostMapping("/signin")
+	    public ResponseEntity<?> signIn(@RequestBody @Valid SigninRequest request) {
+	        System.out.println("in sign in " + request);
+	        Authentication principal = mgr
+	                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+	        String jwtToken = utils.generateJwtToken(principal);
+	       
+	      
+	        return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!"));
+	    }
 
 	@Operation(summary = "Balance Enquiry", description = "Given an account number, cheak how much the user has")
 	@ApiResponse(responseCode = "201", description = "Http Status 201 SUCCESS")

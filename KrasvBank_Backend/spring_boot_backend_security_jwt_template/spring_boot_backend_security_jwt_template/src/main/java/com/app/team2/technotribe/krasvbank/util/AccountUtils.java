@@ -20,6 +20,9 @@ public class AccountUtils {
 	
 	public static final String TRANSFER_SUCCESSFUL_CODE = "008";
 	public static final String TRANSFER_SUCCESSFUL_MESSAGE = "Transfer Successful";
+	public static final String INCORRECT_PASSWORD_CODE ="009";
+	public static final String INCORRECT_PASSWORD_MESSAGE ="INCORRECT PASSWORD";
+	
 	
 	
 	public static String generateAccountNumber() {

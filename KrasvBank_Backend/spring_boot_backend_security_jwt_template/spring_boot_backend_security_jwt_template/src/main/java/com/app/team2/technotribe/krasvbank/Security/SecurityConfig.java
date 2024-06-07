@@ -41,11 +41,11 @@ public class SecurityConfig {
 				(request, resp, exc) -> resp.sendError(HttpStatus.UNAUTHORIZED.value(), "Not yet authenticated")).and()
 				.csrf().disable(). // disable CSRF to continue with REST APIs
 				authorizeRequests() // specify all authorization rules (i.e authorize all requests)
-				.antMatchers( "/api/user/createAccount", "/api/user/signin", "/swagger*/**", "/v*/api-docs/**")
+				.antMatchers( "/api/user/createAccount", "/api/user/signin", "/swagger*/**", "/v*/api-docs/**","/bankStatement")
 				.permitAll() // for incoming req ending with /products/view :
 								// no authentication n
 								// authorization needed
-				.antMatchers("/api/user/*","/api/user/credit").hasRole("USER")// only customer can purchase the products
+				.antMatchers("/bankStatement","/api/user/*","/api/user/credit","/api/user/debit","/api/user/balanceEnquiry","/api/user/nameEnquiry","/api/user/transfer","/api/user/logout").hasRole("USER")// only customer can purchase the products
 				.antMatchers("/api/admin").hasRole("ADMIN") // only admin can add the products
 				.anyRequest().authenticated() // all remaining end points accessible only to authenticated users
 				.and().sessionManagement() // configure HttpSession management

@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
 				.role(userRequest.getRole()).build();
 
 		User savedUser = userRepository.save(newUser);
+
 		// Send email alert
 //		EmailDetails emailDetails = EmailDetails.builder()
 //				.recipient(savedUser.getEmail())
@@ -133,15 +134,20 @@ public class UserServiceImpl implements UserService {
 
 		User userToCredit = userRepository.findByAccountNumber(request.getAccountNumber());
 
-		userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
-		userRepository.save(userToCredit);
+		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userToCredit.getPassword());
+		System.out.println(isPasswordMatch + "isPasswordMatch");
+		if (!isPasswordMatch) {
+			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
+					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
+		} else {
+			userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
+			userRepository.save(userToCredit);
+			// Save transaction
+			TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToCredit.getAccountNumber())
+					.transactionType("CREDIT").amount(request.getAmount()).status("SUCCESS").build();
 
-		// Save transaction
-		TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToCredit.getAccountNumber())
-				.transactionType("CREDIT").amount(request.getAmount()).build();
-
-		transactionService.saveTransaction(transactionDto);
-
+			transactionService.saveTransaction(transactionDto);
+		}
 //		EmailDetails creditAlert=EmailDetails.builder()
 //				.subject("Credit Alert")
 //				.recipient(userToCredit.getEmail())
@@ -174,23 +180,31 @@ public class UserServiceImpl implements UserService {
 		// cheak the amount, debit amount is greater than balance
 		User userToDebit = userRepository.findByAccountNumber(request.getAccountNumber());
 
-		BigDecimal availableBalance = userToDebit.getAccountBalance();
-		BigDecimal debitAmount = request.getAmount();
+		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userToDebit.getPassword());
 
-		if (availableBalance.compareTo(debitAmount) < 0) {
-			return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
-					.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
-		}
+		System.out.println(isPasswordMatch + "isPasswordMatch");
+		if (!isPasswordMatch) {
+			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
+					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
+		} else {
 
-		else {
-			userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
-			userRepository.save(userToDebit);
+			BigDecimal availableBalance = userToDebit.getAccountBalance();
+			BigDecimal debitAmount = request.getAmount();
 
-			// Save transaction
-			TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToDebit.getAccountNumber())
-					.transactionType("DEBIT").amount(request.getAmount()).build();
+			if (availableBalance.compareTo(debitAmount) < 0) {
+				return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
+						.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
+			}
 
-			transactionService.saveTransaction(transactionDto);
+			else {
+				userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
+				userRepository.save(userToDebit);
+
+				// Save transaction
+				TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToDebit.getAccountNumber())
+						.transactionType("DEBIT").amount(request.getAmount()).status("SUCCESS").build();
+
+				transactionService.saveTransaction(transactionDto);
 
 //			EmailDetails creditAlert=EmailDetails.builder()
 //					.subject("Debit Alert")
@@ -198,11 +212,13 @@ public class UserServiceImpl implements UserService {
 //					.messageBody(request.getAmount()+" has Debited from your account !")
 //					.build();
 //			emailService.sendEmailAlert(creditAlert);
-			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_DEBITED_SUCCESS_CODE)
-					.responseMessage(AccountUtils.ACCOUNT_DEBITED_SUCCESS_MESSAGE)
-					.accountInfo(AccountInfo.builder().accountNumber(request.getAccountNumber())
-							.accountName(userToDebit.getName()).accountBalance(userToDebit.getAccountBalance()).build())
-					.build();
+				return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_DEBITED_SUCCESS_CODE)
+						.responseMessage(AccountUtils.ACCOUNT_DEBITED_SUCCESS_MESSAGE)
+						.accountInfo(AccountInfo.builder().accountNumber(request.getAccountNumber())
+								.accountName(userToDebit.getName()).accountBalance(userToDebit.getAccountBalance())
+								.build())
+						.build();
+			}
 		}
 		// if(userToDebit.getAccountBalance().compareTo(request.getAmount()));
 
@@ -222,6 +238,15 @@ public class UserServiceImpl implements UserService {
 		// cheak if the amount i'm debiting is not more than the current balance
 		// debit the account
 		User sourceAccountUser = userRepository.findByAccountNumber(request.getSourceAccountNumber());
+		
+boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), sourceAccountUser.getPassword());
+		
+		System.out.println(isPasswordMatch+"isPasswordMatch");
+		if (!isPasswordMatch) {
+			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
+					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
+		} else {
+		
 		if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
 			return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
 					.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
@@ -252,12 +277,12 @@ public class UserServiceImpl implements UserService {
 		// Save transaction
 		TransactionDto transactionDto = TransactionDto.builder()
 				.accountNumber(destinationAccountUser.getAccountNumber()).transactionType("Account Transfer")
-				.amount(request.getAmount()).build();
+				.amount(request.getAmount()).status("SUCCESS").build();
 
 		transactionService.saveTransaction(transactionDto);
 
 		return BankResponse.builder().responseCode(AccountUtils.TRANSFER_SUCCESSFUL_CODE)
 				.responseMessage(AccountUtils.TRANSFER_SUCCESSFUL_MESSAGE).accountInfo(null).build();
-	}
+	}}
 
 }

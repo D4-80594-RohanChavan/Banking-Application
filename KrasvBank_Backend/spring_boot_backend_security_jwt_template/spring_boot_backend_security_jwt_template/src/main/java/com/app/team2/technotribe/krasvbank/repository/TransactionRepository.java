@@ -7,4 +7,5 @@ import com.app.team2.technotribe.krasvbank.entity.Transaction;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,String>{
 
+	
 }

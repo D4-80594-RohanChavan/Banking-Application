@@ -64,14 +64,14 @@ public class UserController {
 	        return ResponseEntity.ok("Logged out successfully");
 	    }
 
-	@PostMapping("/signin")
-	public ResponseEntity<?> signIn(@RequestBody @Valid SigninRequest request) {
-		System.out.println("in sign in " + request);
-		Authentication principal = mgr
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		String jwtToken = utils.generateJwtToken(principal);
-		return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!"));
-	}
+	 @PostMapping("/signin")
+	    public ResponseEntity<?> signIn(@RequestBody @Valid SigninRequest request) {
+	        System.out.println("in sign in " + request);
+	        Authentication principal = mgr
+	                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+	        String jwtToken = utils.generateJwtToken(principal);
+	        return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!"));
+	    }
 
 	@Operation(summary = "Balance Enquiry", description = "Given an account number, cheak how much the user has")
 	@ApiResponse(responseCode = "201", description = "Http Status 201 SUCCESS")

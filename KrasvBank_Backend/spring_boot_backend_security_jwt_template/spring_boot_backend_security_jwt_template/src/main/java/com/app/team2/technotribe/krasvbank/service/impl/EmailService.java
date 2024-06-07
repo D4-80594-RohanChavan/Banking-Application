@@ -7,4 +7,5 @@ import com.app.team2.technotribe.krasvbank.dto.EmailDetails;
 @Service
 public interface EmailService {
 	void sendEmailAlert(EmailDetails emailDetails);
+	void sendEmailWithAttachment(EmailDetails emailDetails);
 }

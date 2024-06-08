@@ -97,17 +97,27 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public BankResponse balanceEnquiry(EnquiryRequest request) {
 		// check if the provided account number exist in db
-		boolean isAccountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
-		if (!isAccountExist) {
-			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_NOT_EXIST_CODE)
-					.responseMessage(AccountUtils.ACCOUNT_NOT_EXIST_MESSAGE).accountInfo(null).build();
+
+		User userToCheakBalance = userRepository.findByAccountNumber(request.getAccountNumber());
+
+		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userToCheakBalance.getPassword());
+		System.out.println(isPasswordMatch + "isPasswordMatch");
+		if (!isPasswordMatch) {
+			return BankResponse.builder()
+					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).build();
+		} else {
+			boolean isAccountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
+			if (!isAccountExist) {
+				return BankResponse.builder()
+						.responseMessage(AccountUtils.ACCOUNT_NOT_EXIST_MESSAGE).build();
+			}
+			User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+					.responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
+					.accountInfo(AccountInfo.builder().accountBalance(foundUser.getAccountBalance())
+							.accountNumber(request.getAccountNumber()).accountName(foundUser.getName()).build())
+					.build();
 		}
-		User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
-		return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
-				.responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
-				.accountInfo(AccountInfo.builder().accountBalance(foundUser.getAccountBalance())
-						.accountNumber(request.getAccountNumber()).accountName(foundUser.getName()).build())
-				.build();
 	}
 
 	@Override
@@ -238,22 +248,22 @@ public class UserServiceImpl implements UserService {
 		// cheak if the amount i'm debiting is not more than the current balance
 		// debit the account
 		User sourceAccountUser = userRepository.findByAccountNumber(request.getSourceAccountNumber());
-		
-boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), sourceAccountUser.getPassword());
-		
-		System.out.println(isPasswordMatch+"isPasswordMatch");
+
+		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), sourceAccountUser.getPassword());
+
+		System.out.println(isPasswordMatch + "isPasswordMatch");
 		if (!isPasswordMatch) {
 			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
 					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
 		} else {
-		
-		if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
-			return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
-					.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
-		}
-		sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
-		String sourceUsername = sourceAccountUser.getName();
-		userRepository.save(sourceAccountUser);
+
+			if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
+				return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
+						.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
+			}
+			sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
+			String sourceUsername = sourceAccountUser.getName();
+			userRepository.save(sourceAccountUser);
 
 //				EmailDetails debitAlert=EmailDetails.builder()
 //						.subject("Debit Alert")
@@ -263,9 +273,10 @@ boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), sourceA
 //				
 //				emailService.sendEmailAlert(debitAlert);
 
-		User destinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
-		destinationAccountUser.setAccountBalance(destinationAccountUser.getAccountBalance().add(request.getAmount()));
-		userRepository.save(destinationAccountUser);
+			User destinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
+			destinationAccountUser
+					.setAccountBalance(destinationAccountUser.getAccountBalance().add(request.getAmount()));
+			userRepository.save(destinationAccountUser);
 
 //				EmailDetails creditAlert=EmailDetails.builder()
 //						.subject("Credit Alert")
@@ -274,15 +285,16 @@ boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), sourceA
 //						.build();
 //				emailService.sendEmailAlert(creditAlert);
 
-		// Save transaction
-		TransactionDto transactionDto = TransactionDto.builder()
-				.accountNumber(destinationAccountUser.getAccountNumber()).transactionType("Account Transfer")
-				.amount(request.getAmount()).status("SUCCESS").build();
+			// Save transaction
+			TransactionDto transactionDto = TransactionDto.builder()
+					.accountNumber(destinationAccountUser.getAccountNumber()).transactionType("Account Transfer")
+					.amount(request.getAmount()).status("SUCCESS").build();
 
-		transactionService.saveTransaction(transactionDto);
+			transactionService.saveTransaction(transactionDto);
 
-		return BankResponse.builder().responseCode(AccountUtils.TRANSFER_SUCCESSFUL_CODE)
-				.responseMessage(AccountUtils.TRANSFER_SUCCESSFUL_MESSAGE).accountInfo(null).build();
-	}}
+			return BankResponse.builder().responseCode(AccountUtils.TRANSFER_SUCCESSFUL_CODE)
+					.responseMessage(AccountUtils.TRANSFER_SUCCESSFUL_MESSAGE).accountInfo(null).build();
+		}
+	}
 
 }

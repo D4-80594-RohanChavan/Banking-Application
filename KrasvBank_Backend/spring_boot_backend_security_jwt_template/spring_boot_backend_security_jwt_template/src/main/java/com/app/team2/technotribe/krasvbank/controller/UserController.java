@@ -75,9 +75,11 @@ public class UserController {
 	        Authentication principal = mgr
 	                .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 	        String jwtToken = utils.generateJwtToken(principal);
+	       String accnum=request.getAccountNumber();
+	       User foundUser = userRepository.findByAccountNumber(accnum);
+			System.out.println("inside signin controller" + foundUser.toString());
 	       
-	      
-	        return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!"));
+	        return ResponseEntity.ok(new SigninResponse(jwtToken, "User authentication success!!!",foundUser.getName(),accnum));
 	    }
 
 	@Operation(summary = "Balance Enquiry", description = "Given an account number, cheak how much the user has")

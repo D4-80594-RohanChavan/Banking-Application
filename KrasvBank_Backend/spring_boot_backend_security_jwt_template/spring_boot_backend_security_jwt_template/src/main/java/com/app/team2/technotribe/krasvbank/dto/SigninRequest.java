@@ -19,6 +19,7 @@ import lombok.ToString;
 @ToString
 public class SigninRequest {
 	
+	public String accountNumber;
 	@NotBlank(message = "Email can't be blank")
 	@Email(message = "Invalid email format")
 	private String email;

@@ -13,19 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountInfo {
-	
-	@Schema(
-			name="User Account Name"
-			)
-private String accountName;
-	
-	@Schema(
-			name="User Account Balance"
-			)
-private BigDecimal accountBalance;
-	
-	@Schema(
-			name="User Account Number"
-			)
-private String accountNumber;
+
+	@Schema(name = "User Account Name")
+	private String accountName;
+
+	@Schema(name = "User Account Balance")
+	private BigDecimal accountBalance;
+
+	@Schema(name = "User Account Number")
+	private String accountNumber;
 }

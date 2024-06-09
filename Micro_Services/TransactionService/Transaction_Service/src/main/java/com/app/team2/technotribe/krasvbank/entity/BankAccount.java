@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,9 +34,6 @@ public class BankAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String gender;
-	private String address;
-	private String stateOfOrigin;
 	private String accountNumber;
 	private BigDecimal accountBalance;
 	@Column(length = 30, unique = true)
@@ -47,11 +42,7 @@ public class BankAccount {
 	private String password;
 	private String phoneNumber;
 	private String alternativePhoneNumber;
-	private String status;
 
-	@Enumerated(EnumType.STRING)
-	@Column(length = 30)
-	private UserRole role;
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	@UpdateTimestamp

@@ -3,10 +3,10 @@ package com.app.team2.technotribe.krasvbank.util;
 import java.time.Year;
 
 public class AccountUtils {
-	public static final String ACCOUNT_EXISTS_CODE = "001";
-	public static final String ACCOUNT_EXISTS_MESSAGE = "This user has already account created !";
-	public static final String ACCOUNT_CREATION_SUCCESS = "002";
-	public static final String ACCOUNT_CREATION_MESSAGE = "Account has been successfull created ";
+//	public static final String ACCOUNT_EXISTS_CODE = "001";
+//	public static final String ACCOUNT_EXISTS_MESSAGE = "This user has already account created !";
+//	public static final String ACCOUNT_CREATION_SUCCESS = "002";
+//	public static final String ACCOUNT_CREATION_MESSAGE = "Account has been successfull created ";
 	public static final String ACCOUNT_NOT_EXIST_CODE = "003";
 	public static final String ACCOUNT_NOT_EXIST_MESSAGE = "User with the provided Account Number does not exist";
 	public static final String ACCOUNT_FOUND_CODE = "004";

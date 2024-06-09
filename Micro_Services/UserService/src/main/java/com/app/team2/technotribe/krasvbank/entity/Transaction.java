@@ -28,8 +28,8 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "transactions")
+//@Entity
+//@Table(name = "transactions")
 public class Transaction {
 
 	@Id

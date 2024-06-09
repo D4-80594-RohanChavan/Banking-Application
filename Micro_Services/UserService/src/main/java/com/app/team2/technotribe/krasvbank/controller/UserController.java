@@ -1,5 +1,7 @@
 package com.app.team2.technotribe.krasvbank.controller;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,14 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.team2.technotribe.krasvbank.bankStatement.BankStatement;
 import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
 import com.app.team2.technotribe.krasvbank.dto.SigninRequest;
 import com.app.team2.technotribe.krasvbank.dto.SigninResponse;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
+import com.app.team2.technotribe.krasvbank.entity.Transaction;
 import com.app.team2.technotribe.krasvbank.entity.User;
 import com.app.team2.technotribe.krasvbank.dto.SignupRequest;
 import com.app.team2.technotribe.krasvbank.service.impl.UserService;
@@ -34,8 +39,10 @@ import com.app.team2.technotribe.krasvbank.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
 import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/user")
 @Tag(name = "User Account Management APIs")
@@ -52,6 +59,15 @@ public class UserController {
 	@Autowired
 	private AuthenticationManager mgr;
 
+	@Autowired
+	private BankStatement bankStatement;
+
+	@GetMapping("/bankStatement")
+	public List<Transaction> generateBankStatemant(@RequestParam String accountNumber, @RequestParam String startDate,
+			@RequestParam String endDate) {
+		return bankStatement.generateStatement(accountNumber, startDate, endDate);
+	}
+	
 	@Operation(summary = "Create New User Account", description = "Creating a new user and assigning an account ID")
 	@ApiResponse(responseCode = "201", description = "Http Status 201 Created")
 

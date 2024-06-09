@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import com.app.team2.technotribe.krasvbank.dto.AccountInfo;
 import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
-import com.app.team2.technotribe.krasvbank.dto.EmailDetails;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
-import com.app.team2.technotribe.krasvbank.dto.TransactionDto;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
 import com.app.team2.technotribe.krasvbank.dto.SignupRequest;
 import com.app.team2.technotribe.krasvbank.entity.User;
@@ -30,16 +28,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	EmailService emailService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	JwtUtils jwtUtils;
-	@Autowired 
-	TransactionService transactionService;
 
 	@Autowired
 	ExternalTransactionService externalTransactionService;
@@ -62,16 +56,6 @@ public class UserServiceImpl implements UserService {
 
 		User savedUser = userRepository.save(newUser);
 
-		// Send email alert
-//		EmailDetails emailDetails = EmailDetails.builder()
-//				.recipient(savedUser.getEmail())
-//				.subject("ACCOUNT CREATION")
-//				.messageBody(
-//						"Congratulations! Your Account Has been Successfully Created. \n Your Account Details:  \n Account Name:"
-//								+ savedUser.getName() + "\n Account Number :" + savedUser.getAccountNumber())
-//				.build();
-//		emailService.sendEmailAlert(emailDetails);
-
 		return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_CREATION_SUCCESS)
 				.responseMessage(AccountUtils.ACCOUNT_CREATION_MESSAGE)
 				.accountInfo(AccountInfo.builder().accountBalance(savedUser.getAccountBalance())
@@ -80,23 +64,6 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-//	public BankResponse login(SigninRequest loginDto) {
-//		Authentication authentication=null;
-//		authentication=authenticationManager.authenticate(
-//				new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
-//				);
-//		EmailDetails loginAlert=EmailDetails.builder()
-//				.subject("You're logged in! ")
-//				.recipient(loginDto.getEmail())
-//				.messageBody("you logged into your account. if you did non initiate this request, please contact your bank")
-//				.build();
-//		emailService.sendEmailAlert(loginAlert);
-//		return BankResponse.builder()
-//				.responseCode("Login Success")
-//				.responseMessage(jwtUtils.generateJwtToken(authentication))
-//				.build();
-//	}
-
 	@Override
 	public BankResponse balanceEnquiry(EnquiryRequest request) {
 		// check if the provided account number exist in db
@@ -104,40 +71,17 @@ public class UserServiceImpl implements UserService {
 		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userToCheakBalance.getPassword());
 		System.out.println(isPasswordMatch + "isPasswordMatch");
 		if (!isPasswordMatch) {
-			return BankResponse.builder()
-					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).build();
+			return BankResponse.builder().responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).build();
 		}
-		 BigDecimal balance=externalTransactionService.balanceEnquiry(request.getAccountNumber());
-		
+		BigDecimal balance = externalTransactionService.balanceEnquiry(request.getAccountNumber());
+
 		User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
-					return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
+		return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
 				.responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
-				.accountInfo(AccountInfo.builder().accountBalance(balance)
-						.accountNumber(request.getAccountNumber()).accountName(foundUser.getName()).build())
+				.accountInfo(AccountInfo.builder().accountBalance(balance).accountNumber(request.getAccountNumber())
+						.accountName(foundUser.getName()).build())
 				.build();
 	}
-		
-//		User userToCheakBalance = userRepository.findByAccountNumber(request.getAccountNumber());
-//
-//		boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userToCheakBalance.getPassword());
-//		System.out.println(isPasswordMatch + "isPasswordMatch");
-//		if (!isPasswordMatch) {
-//			return BankResponse.builder()
-//					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).build();
-//		} else {
-//			boolean isAccountExist = userRepository.existsByAccountNumber(request.getAccountNumber());
-//			if (!isAccountExist) {
-//				return BankResponse.builder()
-//						.responseMessage(AccountUtils.ACCOUNT_NOT_EXIST_MESSAGE).build();
-//			}
-//			User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
-//			return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_FOUND_CODE)
-//					.responseMessage(AccountUtils.ACCOUNT_FOUND_MESSAGE)
-//					.accountInfo(AccountInfo.builder().accountBalance(foundUser.getAccountBalance())
-//							.accountNumber(request.getAccountNumber()).accountName(foundUser.getName()).build())
-//					.build();
-//		}
-	
 
 	@Override
 	public String nameEnquiry(EnquiryRequest request) {
@@ -171,32 +115,7 @@ public class UserServiceImpl implements UserService {
 		} else {
 			return externalTransactionService.creditAccount(request);
 		}
-//			userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
-//			userRepository.save(userToCredit);
-//			// Save transaction
-//			TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToCredit.getAccountNumber())
-//					.transactionType("CREDIT").amount(request.getAmount()).status("SUCCESS").build();
-//
-//			transactionService.saveTransaction(transactionDto);
-//		}
-////		EmailDetails creditAlert=EmailDetails.builder()
-////				.subject("Credit Alert")
-////				.recipient(userToCredit.getEmail())
-////				.messageBody(request.getAmount()+" has been Credited to your account !")
-////				.build();
-////		emailService.sendEmailAlert(creditAlert);
-//
-//		return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_CREDITED_SUCCESS_CODE)
-//				.responseMessage(AccountUtils.ACCOUNT_CREDITED_SUCCESS_MESSAGE)
-//				.accountInfo(AccountInfo.builder().accountName(userToCredit.getName())
-//						.accountBalance(userToCredit.getAccountBalance()).accountNumber(request.getAccountNumber())
-//						.build())
-//				.build();
 	}
-
-//	public BankResponse debitAccount(CreditDebitRequest request) {}
-//
-//	// balance Enquiry, name Enquiry, credit, debit, transfer
 
 	@Override
 	public BankResponse debitAccount(CreditDebitRequest request) {
@@ -218,44 +137,9 @@ public class UserServiceImpl implements UserService {
 			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
 					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
 		} else {
-			
-			
+
 			return externalTransactionService.debitAccount(request);
 		}
-
-//			BigDecimal availableBalance = userToDebit.getAccountBalance();
-//			BigDecimal debitAmount = request.getAmount();
-//
-//			if (availableBalance.compareTo(debitAmount) < 0) {
-//				return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
-//						.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
-//			}
-//
-//			else {
-//				userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
-//				userRepository.save(userToDebit);
-//
-//				// Save transaction
-//				TransactionDto transactionDto = TransactionDto.builder().accountNumber(userToDebit.getAccountNumber())
-//						.transactionType("DEBIT").amount(request.getAmount()).status("SUCCESS").build();
-//
-//				transactionService.saveTransaction(transactionDto);
-//
-////			EmailDetails creditAlert=EmailDetails.builder()
-////					.subject("Debit Alert")
-////					.recipient(userToDebit.getEmail())
-////					.messageBody(request.getAmount()+" has Debited from your account !")
-////					.build();
-////			emailService.sendEmailAlert(creditAlert);
-//				return BankResponse.builder().responseCode(AccountUtils.ACCOUNT_DEBITED_SUCCESS_CODE)
-//						.responseMessage(AccountUtils.ACCOUNT_DEBITED_SUCCESS_MESSAGE)
-//						.accountInfo(AccountInfo.builder().accountNumber(request.getAccountNumber())
-//								.accountName(userToDebit.getName()).accountBalance(userToDebit.getAccountBalance())
-//								.build())
-//						.build();
-//			}
-//		}
-		// if(userToDebit.getAccountBalance().compareTo(request.getAmount()));
 
 	}
 
@@ -281,45 +165,8 @@ public class UserServiceImpl implements UserService {
 			return BankResponse.builder().responseCode(AccountUtils.INCORRECT_PASSWORD_CODE)
 					.responseMessage(AccountUtils.INCORRECT_PASSWORD_MESSAGE).accountInfo(null).build();
 		} else {
-			 return externalTransactionService.transfer(request);
+			return externalTransactionService.transfer(request);
 
-//			if (request.getAmount().compareTo(sourceAccountUser.getAccountBalance()) > 0) {
-//				return BankResponse.builder().responseCode(AccountUtils.INSUFFICIENT_BALANCE_CODE)
-//						.responseMessage(AccountUtils.INSUFFICIENT_BALANCE_MESSAGE).accountInfo(null).build();
-//			}
-//			sourceAccountUser.setAccountBalance(sourceAccountUser.getAccountBalance().subtract(request.getAmount()));
-//			String sourceUsername = sourceAccountUser.getName();
-//			userRepository.save(sourceAccountUser);
-//
-////				EmailDetails debitAlert=EmailDetails.builder()
-////						.subject("Debit Alert")
-////						.recipient(sourceAccountUser.getEmail())
-////						.messageBody(request.getAmount()+" has been deducted from your account ! Your current balance is "+sourceAccountUser.getAccountBalance())
-////						.build();
-////				
-////				emailService.sendEmailAlert(debitAlert);
-//
-//			User destinationAccountUser = userRepository.findByAccountNumber(request.getDestinationAccountNumber());
-//			destinationAccountUser
-//					.setAccountBalance(destinationAccountUser.getAccountBalance().add(request.getAmount()));
-//			userRepository.save(destinationAccountUser);
-//
-////				EmailDetails creditAlert=EmailDetails.builder()
-////						.subject("Credit Alert")
-////						.recipient(destinationAccountUser.getEmail())
-////						.messageBody(request.getAmount()+" has been Credited to your account from!"+sourceUsername+" Your current balance is "+destinationAccountUser.getAccountBalance())
-////						.build();
-////				emailService.sendEmailAlert(creditAlert);
-//
-//			// Save transaction
-//			TransactionDto transactionDto = TransactionDto.builder()
-//					.accountNumber(destinationAccountUser.getAccountNumber()).transactionType("Account Transfer")
-//					.amount(request.getAmount()).status("SUCCESS").build();
-//
-//			transactionService.saveTransaction(transactionDto);
-//
-//			return BankResponse.builder().responseCode(AccountUtils.TRANSFER_SUCCESSFUL_CODE)
-//					.responseMessage(AccountUtils.TRANSFER_SUCCESSFUL_MESSAGE).accountInfo(null).build();
 		}
 	}
 

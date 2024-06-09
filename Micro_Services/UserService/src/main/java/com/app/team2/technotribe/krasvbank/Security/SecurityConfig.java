@@ -82,7 +82,7 @@ public AuthenticationEntryPoint customAuthenticationEntryPoint() {
 	        		
 		.and().csrf().disable() // disable CSRF to continue with REST APIs
 				.authorizeRequests() // specify all authorization rules (i.e authorize all requests)
-				.antMatchers("/api/user/createAccount", "/api/user/signin", "/swagger*/**", "/v*/api-docs/**")
+				.antMatchers("/api/admin/activateuser","/api/admin/updateuser","/api/admin/inactiveUser","/api/admin/userbyaccountnumber","/api/admin/usersbystatus","/api/user/createAccount", "/api/user/signin", "/swagger*/**", "/v*/api-docs/**")
 				.permitAll()
 				.antMatchers("/bankStatement", "/api/user/*", "/api/user/credit", "/api/user/debit",
 						"/api/user/balanceEnquiry", "/api/user/nameEnquiry", "/bankStatement", "/api/user/transfer",

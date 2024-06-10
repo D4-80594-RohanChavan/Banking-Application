@@ -1,0 +1,20 @@
+.terms-container {
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .terms-container h1 {
+    margin-bottom: 20px;
+    color: #007bff;
+  }
+  
+  .terms-container p {
+    line-height: 1.6;
+    color: #333;
+  }
+  

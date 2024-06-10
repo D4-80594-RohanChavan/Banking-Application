@@ -1,0 +1,113 @@
+.login-container {
+  width: 40%;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  
+  text-align: center;
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+  color: #002366;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  margin: 0 5px;
+  font-weight: bold;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.create-account {
+  margin-top: 20px;
+}
+
+.create-account p {
+  margin: 0;
+  color: #666;
+}
+
+.create-account button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #28a745;
+}
+
+.create-account button:hover {
+  background-color: #218838;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+.footer p {
+  margin: 0;
+  color: #666;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  margin: 0 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

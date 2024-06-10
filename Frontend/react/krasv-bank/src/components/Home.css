@@ -1,0 +1,148 @@
+.home-container {
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.header-image img {
+ 
+  width: 92%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: 0;
+  padding-left: 100px;
+  
+}
+
+.info-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-section img {
+  width: 40%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.info-box {
+  width: 50%;
+  padding: 20px;
+  text-align: left;
+}
+
+.info-box h2 {
+  margin-bottom: 20px;
+}
+
+/* Custom List Markers Using CSS */
+.custom-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.custom-list li {
+  margin: 10px 0;
+  padding-left: 25px;
+  position: relative;
+}
+
+.custom-list li::before {
+  content: "•"; /* You can change this to any Unicode character or shape */
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 20px; /* Adjust size as needed */
+  color: #007bff; /* Adjust color as needed */
+}
+
+.info-box button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.info-box button:hover {
+  background-color: #0056b3;
+}
+
+.additional-image {
+  width: 80%;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.additional-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.three-sections {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 40px auto;
+}
+
+.section-box {
+  width: 30%;
+  padding: 20px;
+  text-align: left;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-box button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.section-box button:hover {
+  background-color: #0056b3;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+.footer p {
+  margin: 0;
+  color: #666;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  margin: 0 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

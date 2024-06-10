@@ -27,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "bank_account")
 public class BankAccount {
 
 	@Id
@@ -35,7 +35,7 @@ public class BankAccount {
 	private Long id;
 	private String name;
 	private String accountNumber;
-	private BigDecimal accountBalance;
+	private BigDecimal accountBalance=BigDecimal.ZERO;
 	@Column(length = 30, unique = true)
 	private String email;
 	@Column(length = 300, nullable = false)

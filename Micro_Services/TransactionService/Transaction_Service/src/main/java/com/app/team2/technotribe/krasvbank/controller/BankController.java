@@ -1,6 +1,5 @@
 package com.app.team2.technotribe.krasvbank.controller;
 
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
+import com.app.team2.technotribe.krasvbank.entity.BankAccount;
 import com.app.team2.technotribe.krasvbank.entity.Transaction;
 import com.app.team2.technotribe.krasvbank.service.impl.BankService;
 import com.app.team2.technotribe.krasvbank.repository.BankRepository;
@@ -33,57 +33,55 @@ import lombok.AllArgsConstructor;
 @Tag(name = "User Account Management APIs")
 public class BankController {
 
-	
 	@Autowired
-	BankService userService;
+	BankService bankService;
 	@Autowired
 	BankRepository userRepository;
 
 	@Autowired
 	private BankStatement bankStatement;
-	
 
-//	@GetMapping("bankStatement")
-//	public String generateBankStatemant() {
-//		
-//		System.out.println("inside bankstat controller");
-//		return "inside bankstat controller";
-//	}
+	@PostMapping("createaccount")
+	public String createBankAccount(@RequestBody BankAccount newAccount) {
+
+		return bankService.createAccount(newAccount);
+	}
 
 	@GetMapping("bankStatement")
 	public List<Transaction> generateBankStatemant(@RequestParam String accountNumber, @RequestParam String startDate,
 			@RequestParam String endDate) {
-		
+
 		System.out.println("inside bankstat controller");
 		return bankStatement.generateStatement(accountNumber, startDate, endDate);
 	}
-	
+
 	@Operation(summary = "Balance Enquiry", description = "Given an account number, cheak how much the user has")
-	@ApiResponse(responseCode = "201", description = "Http Status 201 SUCCESS")	
+	@ApiResponse(responseCode = "201", description = "Http Status 201 SUCCESS")
 	@GetMapping("/balanceEnquiry/{accountNumber}")
-    public BigDecimal balanceEnquiry(@PathVariable("accountNumber") String accountNumber) {
+	public BigDecimal balanceEnquiry(@PathVariable("accountNumber") String accountNumber) {
 		System.out.println("inside transactionservice controller");
-        EnquiryRequest enquiryRequest = new EnquiryRequest(accountNumber);
-        return userService.balanceEnquiry(enquiryRequest);
-    }
+		EnquiryRequest enquiryRequest = new EnquiryRequest(accountNumber);
+		return bankService.balanceEnquiry(enquiryRequest);
+	}
 
 	@PostMapping("credit")
 	public BankResponse creditAccount(@RequestBody CreditDebitRequest request) {
-		return userService.creditAccount(request);
+		return bankService.creditAccount(request);
 	}
 
 	@PostMapping("debit")
 	public BankResponse debitAccount(@RequestBody CreditDebitRequest request) {
-		return userService.debitAccount(request);
+		return bankService.debitAccount(request);
 	}
 
 	@PostMapping("transfer")
 	public BankResponse transfer(@RequestBody TransferRequest request) {
-		return userService.transfer(request);
+		return bankService.transfer(request);
 	}
+
 	@GetMapping("nameEnquiry")
 	public String nameEnquiry(@RequestBody EnquiryRequest request) {
-		return userService.nameEnquiry(request);
+		return bankService.nameEnquiry(request);
 	}
 
 }

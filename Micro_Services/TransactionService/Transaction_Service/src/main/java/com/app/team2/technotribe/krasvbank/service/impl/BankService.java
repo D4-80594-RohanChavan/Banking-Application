@@ -6,6 +6,7 @@ import com.app.team2.technotribe.krasvbank.dto.BankResponse;
 import com.app.team2.technotribe.krasvbank.dto.CreditDebitRequest;
 import com.app.team2.technotribe.krasvbank.dto.EnquiryRequest;
 import com.app.team2.technotribe.krasvbank.dto.TransferRequest;
+import com.app.team2.technotribe.krasvbank.entity.BankAccount;
 
 public interface BankService {
 
@@ -21,6 +22,8 @@ public interface BankService {
 	BankResponse debitAccount(CreditDebitRequest request);
 
 	BankResponse transfer(TransferRequest request);
+
+	String createAccount(BankAccount newAccount);
 	
 }
  

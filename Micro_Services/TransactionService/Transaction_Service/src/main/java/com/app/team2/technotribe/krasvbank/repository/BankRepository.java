@@ -11,7 +11,7 @@ import com.app.team2.technotribe.krasvbank.entity.BankAccount;
 public interface BankRepository extends JpaRepository<BankAccount,Long> {
 
 	Boolean existsByEmail(String email);
-
+	
 	BankAccount findByAccountNumber(String accountNumber);
 
 	boolean existsByAccountNumber(String accountNumber);

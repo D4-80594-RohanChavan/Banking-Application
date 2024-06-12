@@ -3,14 +3,14 @@
   font-family: Arial, sans-serif;
 }
 
-.header-image img {
- 
-  width: 92%;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: 0;
-  padding-left: 100px;
-  
+.header-image {
+  width: 100%;
+  overflow: hidden;
+}
+
+.header-image video {
+  width: 100%;
+  height: auto;
 }
 
 .info-section {
@@ -41,7 +41,6 @@
   margin-bottom: 20px;
 }
 
-/* Custom List Markers Using CSS */
 .custom-list {
   list-style-type: none;
   padding: 0;

@@ -6,7 +6,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>Welcome to Krasv Bank</h1>
+        
         <Link to="/" className="logout-button">Logout</Link>
       </header>
       <div className="dashboard-content">

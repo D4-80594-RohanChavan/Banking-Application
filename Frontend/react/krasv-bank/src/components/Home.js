@@ -8,7 +8,10 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="header-image">
-      <img src="/images/logo.png" alt="Header" />
+      <video autoPlay loop muted>
+          <source src="/videos/header-video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <div className="info-section">
@@ -28,7 +31,7 @@ const Home = () => {
       </div>
 
       <div className="additional-image">
-      <img src="/images/logo3.jpg" alt="Header" />
+      <img src="/images/bank.png" alt="Header" />
       </div>
 
       <div className="three-sections">

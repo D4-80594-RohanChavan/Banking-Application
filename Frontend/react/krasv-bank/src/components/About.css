@@ -1,56 +1,64 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body Styling */
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-  }
-  
-  /* About Container Styling */
-  .about-container {
-    
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-  }
-  
-  /* About Section Styling */
-  .about-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #002366;
-    border-bottom: 2px solid #002366;
-    padding-bottom: 5px;
-  }
-  
-  .about-container h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    color: #002366;
-    border-bottom: 1px solid #002366;
-    padding-bottom: 5px;
-  }
-  
-  .about-container p, .about-container ul {
-    margin-bottom: 20px;
-  }
-  
-  .about-container ul {
-    list-style-type: disc;
-    padding-left: 20px;
-  }
-  
-  .about-container ul li {
-    margin-bottom: 10px;
-  }
+.about-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
 
-  
+.about-container h1 {
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.about-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: left;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.about-image {
+  width: 30%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.about-content {
+  padding: 20px;
+  width: 65%;
+}
+
+.about-content h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-content h3 {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.about-content p,
+.about-content ul {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.about-content ul {
+  padding-left: 20px;
+}
+
+.about-content ul li {
+  margin-bottom: 10px;
+}

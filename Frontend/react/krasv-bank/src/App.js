@@ -10,9 +10,13 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import Dashboard from './components/Dashboard';
 import AdminDashboard from './components/AdminDashboard';
+import AmountTransfer from './components/AmountTransfer';
+import PaymentSuccess from './components/PaymentSuccess';
+
 
 const App = () => {
   return (
+    
     <Router>
       <div className="App">
         <Header />
@@ -27,6 +31,8 @@ const App = () => {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/amount-transfer" element={<AmountTransfer/>} />
+          <Route path="/payment-success" element={<PaymentSuccess/>} />
         </Routes>
         </main>
       </div>
@@ -34,4 +40,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default App

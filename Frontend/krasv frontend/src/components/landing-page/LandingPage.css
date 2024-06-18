@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+.header {
+    background-color: #f8f9fa;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.nav-link {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 15px;
+}
+
+.nav-link:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.btn {
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.heading {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.paragraph {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+    margin-top: 40px;
+}
+
+.footer p {
+    margin: 0;
+    color: #666;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    margin: 0 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}

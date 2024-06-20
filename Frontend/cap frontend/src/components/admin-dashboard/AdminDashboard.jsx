@@ -348,7 +348,7 @@ function AdminDashboard() {
             <div className="container-fluid">
                 <div className="row mb-3 py-2 text-bg-primary sticky-top">
                     <div className="col-6">
-                        <h4 className="mb-0">KRASV</h4>
+                    <img src="/src/assets/ui.png" alt="Krasv" width="220px" />
                     </div>
                     <div className="col-6 text-end">
                         <button type="button" title="Sign Out" className="btn btn-sm btn-outline-light" onClick={signOutHandler}><FiLogOut /> {user?.name}</button>

@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  reportingservice:
+    image: chavanrohan11/kb-reportingservice
+    ports:
+      - 7078:7078
+    networks:
+      - krasav_bank_network
+
+  transactionservice:
+    image: chavanrohan11/kb-transactionservice
+    ports:
+      - 7074:7074
+    networks:
+      - krasav_bank_network
+
+  notificationservice:
+    image: chavanrohan11/kb-notificationservice
+    ports:
+      - 7082:7082
+    networks:
+      - krasav_bank_network
+
+  userservice:
+    image: chavanrohan11/kb-userservice
+    ports:
+      - 7070:7070
+    networks:
+      - krasav_bank_network
+
+networks:
+  krasav_bank_network:

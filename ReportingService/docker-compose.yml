@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: '3.8'
 
 services:
@@ -20,4 +21,28 @@ services:
       MYSQL_ROOT_PASSWORD: manager
       MYSQL_DATABASE: Krasav_bank_transaction
       
+=======
+version: '3.8'
+
+services:
+  reportingservice:
+    image: chavanrohan11/reportingservice
+    ports:
+      - 7078:7078
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/Krasav_bank_transaction?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: manager
+    depends_on:
+      - db
+    
+  db:
+    image: mysql:8.4.0
+    environment:
+      DATABASE_HOST: docker-mysql
+      DATABASE_PORT: 3306
+      MYSQL_ROOT_PASSWORD: manager
+      MYSQL_DATABASE: Krasav_bank_transaction
+      
+>>>>>>> 1f121701983e37c5f071e9c7568ecab8f131e0af
       

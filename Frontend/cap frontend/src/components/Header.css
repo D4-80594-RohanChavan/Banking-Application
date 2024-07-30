@@ -1,0 +1,29 @@
+/* src/components/Header.css */
+
+.header {
+    background-color: #f8f9fa;
+    padding: 10px 0;
+}
+
+.nav-link {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 15px;
+}
+
+.nav-link:hover {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.btn {
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}

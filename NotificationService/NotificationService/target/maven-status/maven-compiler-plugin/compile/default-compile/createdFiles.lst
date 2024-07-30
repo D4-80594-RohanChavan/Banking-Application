@@ -1,0 +1,7 @@
+com\app\team2\technotribe\krasvbank\service\impl\EmailService.class
+com\app\team2\technotribe\krasvbank\dto\EmailDetailsDto$EmailDetailsDtoBuilder.class
+com\app\team2\technotribe\krasvbank\controller\NotificationController.class
+com\app\team2\technotribe\krasvbank\dto\EmailDetailsDto.class
+com\app\team2\technotribe\krasvbank\config\MailConfig.class
+com\app\team2\technotribe\krasvbank\service\impl\EmailServiceImpl.class
+com\app\team2\technotribe\krasvbank\Application.class

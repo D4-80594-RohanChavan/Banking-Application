@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and the JDK version configured as "jdk11"
+        maven 'M3'
+        jdk 'jdk17'
+    }
+
+    environment {
+        // Define SonarQube environment variables
+        SONARQUBE_URL = 'http://localhost:9000'
+        SONARQUBE_TOKEN = credentials('Krasv_bank')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from GitHub
+                git branch: 'main', url: 'https://github.com/D4-80594-RohanChavan/Banking-Application.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Run Maven build
+                bat 'mvn clean install'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                // Run SonarQube analysis
+                withSonarQubeEnv('server sonar') {
+                    bat 'mvn sonar:sonar -Dsonar.projectKey=Krasv_bank -Dsonar.projectName=Krasv_bank -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_77a1596f0f95373bae2a4689928d661436d0326b'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up workspace
+            cleanWs()
+        }
+    }
+}
